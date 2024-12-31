@@ -132,3 +132,21 @@ IN (
 )
 GROUP BY city
 ORDER BY sum( oamt ) DESC
+
+
+create table emp1(eno  int(3) primary key, ename  varchar(10), sal int(4),  bosseno int(3));
+insert into emp1 values
+(1,        'Alice',      1800,   null),
+(2,        'Ben',        900,   1),
+(3,        'Chris',      900,   1),
+(4,        'David',      500,   2),
+(5,        'Elcid',      500,   2),
+(6,        'Frank',      500,   3);
+
+
+Self Join 
+
+SELECT e1.ename AS 'Employee name', e2.ename AS 'Boss Name'
+FROM emp1 e1
+JOIN emp1 e2 
+ON e1.bosseno = e2.eno
