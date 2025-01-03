@@ -195,3 +195,36 @@ insert into rating(ord_id,pricing_id,stars) values
 
 (102,4,4),
 (102,3,4);
+
+
+
+SELECT * , sum( qty * supp_price ) AS 'total', 0.18 * sum( qty * supp_price ) AS 'GST', 
+FROM orderdetails
+JOIN supplier_pricing
+USING ( pricing_id )
+WHERE ord_id =101
+
+
+SELECT * , sum( qty * supp_price ) AS 'total', 0.18 * sum( qty * supp_price ) AS 'GST', sum( qty * supp_price ) + 0.18 * sum( qty * supp_price ) AS 'Payable'
+FROM orderdetails
+JOIN supplier_pricing
+USING ( pricing_id )
+WHERE ord_id =101
+
+
+SELECT ord_id , sum( qty * supp_price ) AS 'total', 0.18 * sum( qty * supp_price ) AS 'GST', sum( qty * supp_price ) + 0.18 * sum( qty * supp_price ) AS 'Payable'
+FROM orderdetails
+JOIN supplier_pricing
+USING ( pricing_id )
+GROUP BY ord_id
+
+
+SELECT supp_name
+FROM rating
+JOIN orderdetails
+USING ( ord_id, pricing_id )
+JOIN supplier_pricing
+USING ( pricing_id )
+JOIN supplier
+USING ( supp_id )
+WHERE stars =5
