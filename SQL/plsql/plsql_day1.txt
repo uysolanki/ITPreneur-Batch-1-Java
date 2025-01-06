@@ -1,0 +1,66 @@
+SQL> -- write a plsql function to display cityname of customer AAKASH
+SQL> create or replace function f1
+  2  return varchar
+  3  is
+  4  fcity varchar(10);
+  5  begin
+  6  select ccity into fcity
+  7  from customer
+  8  where cname like 'AAKASH';
+  9  return fcity;
+ 10  end;
+ 11  /
+
+Function created.
+
+SQL> select 123*456 from dual;
+
+   123*456                                                                      
+----------                                                                      
+     56088                                                                      
+
+SQL> select f1 from dual;
+
+F1                                                                              
+--------------------------------------------------------------------------------
+DELHI                                                                           
+
+SQL> select sysdate from dual;
+
+SYSDATE                                                                         
+---------                                                                       
+06-JAN-25                                                                       
+
+SQL> -- display the total number of customers from Delhi City
+SQL> @D:\EclipseJavaProgs\ITPreneurBatch1\SQL\plsql\F2.SQL
+
+Function created.
+
+SQL> select f2 from dual;
+
+        F2                                                                      
+----------                                                                      
+         2                                                                      
+
+SQL> @D:\EclipseJavaProgs\ITPreneurBatch1\SQL\plsql\F3.SQL
+
+Function created.
+
+
+F3('DELHI')                                                                     
+-----------                                                                     
+          2                                                                     
+
+SQL> select f3('LUCKNOW')  from dual;
+
+F3('LUCKNOW')                                                                   
+-------------                                                                   
+            1                                                                   
+
+SQL> select f3('MUMBAI')  from dual;
+
+F3('MUMBAI')                                                                    
+------------                                                                    
+           2                                                                    
+
+SQL> spool off
