@@ -1,0 +1,28 @@
+SQL> create or replace function f7(fcid number)
+  2  return varchar
+  3  is
+  4  fcity varchar(10);
+  5  begin
+  6  select ccity into fcity
+  7  from customer
+  8  where cid=fcid;
+  9  return fcity;
+ 10  end;
+ 11  /
+
+Function created.
+
+SQL> set serveroutput on;
+SQL> select f7(7) from dual;
+
+F7(7)                                                                           
+--------------------------------------------------------------------------------
+MUMBAI                                                                          
+
+SQL> select f7(6) from dual;
+
+F7(6)                                                                           
+--------------------------------------------------------------------------------
+DELHI                                                                           
+
+SQL> spool off

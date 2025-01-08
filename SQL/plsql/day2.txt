@@ -1,0 +1,255 @@
+SQL> insert into  customerbu values(8,'Rahul','8888112233','Pune','m');
+
+1 row created.
+
+SQL> insert into  customerbu values(9,'Rajesh','8888112234','Pune','m');
+
+1 row created.
+
+SQL> rename table customerbu to custbu;
+rename table customerbu to custbu
+       *
+ERROR at line 1:
+ORA-00903: invalid table name 
+
+
+SQL> rename customerbu to custbu;
+
+Table renamed.
+
+SQL> insert into  customerbu values(10,'Karan','8888112235','Jaipur','m');
+insert into  customerbu values(10,'Karan','8888112235','Jaipur','m')
+             *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> insert into  custbu values(10,'Karan','8888112235','Jaipur','m');
+
+1 row created.
+
+SQL> insert into  custbu values(11,'Pooja','8888112236','Jaipur','f');
+
+1 row created.
+
+SQL> select * from custbu;
+
+       CID CNAME                CPHONE               CCITY                C     
+---------- -------------------- -------------------- -------------------- -     
+         1 AAKASH               9999999999           DELHI                m     
+         2 AMAN                 9785463215           NOIDA                m     
+         3 NEHA                 9999999999           MUMBAI               f     
+         4 MEGHA                9994562399           KOLKATA              f     
+         5 PULKIT               7895999999           LUCKNOW              m     
+         6 VIRAT                9890989065           DELHI                m     
+         7 ROHIT                8888111222           MUMBAI               m     
+         8 Rahul                8888112233           Pune                 m     
+         9 Rajesh               8888112234           Pune                 m     
+        10 Karan                8888112235           Jaipur               m     
+        11 Pooja                8888112236           Jaipur               f     
+
+11 rows selected.
+
+SQL> rollback;
+
+Rollback complete.
+
+SQL> select * from custbu;
+
+       CID CNAME                CPHONE               CCITY                C     
+---------- -------------------- -------------------- -------------------- -     
+         1 AAKASH               9999999999           DELHI                m     
+         2 AMAN                 9785463215           NOIDA                m     
+         3 NEHA                 9999999999           MUMBAI               f     
+         4 MEGHA                9994562399           KOLKATA              f     
+         5 PULKIT               7895999999           LUCKNOW              m     
+         6 VIRAT                9890989065           DELHI                m     
+         7 ROHIT                8888111222           MUMBAI               m     
+         8 Rahul                8888112233           Pune                 m     
+         9 Rajesh               8888112234           Pune                 m     
+
+9 rows selected.
+
+SQL> insert into  customer values(8,'Rahul','8888112233','Pune','m');
+
+1 row created.
+
+SQL> insert into  customer values(9,'Rajesh','8888112234','Pune','m');
+
+1 row created.
+
+SQL> truncate table custbu;
+
+Table truncated.
+
+SQL> select * from custbu;
+
+no rows selected
+
+SQL> insert into  customer values(10,'Karan','8888112235','Jaipur','m');
+
+1 row created.
+
+SQL> insert into  customer values(11,'Pooja','8888112236','Jaipur','f');
+
+1 row created.
+
+SQL> rollback;
+
+Rollback complete.
+
+SQL> select * from customer;
+
+       CID CNAME                CPHONE               CCITY                C     
+---------- -------------------- -------------------- -------------------- -     
+         1 AAKASH               9999999999           DELHI                m     
+         2 AMAN                 9785463215           NOIDA                m     
+         3 NEHA                 9999999999           MUMBAI               f     
+         4 MEGHA                9994562399           KOLKATA              f     
+         5 PULKIT               7895999999           LUCKNOW              m     
+         6 VIRAT                9890989065           DELHI                m     
+         7 ROHIT                8888111222           MUMBAI               m     
+         8 Rahul                8888112233           Pune                 m     
+         9 Rajesh               8888112234           Pune                 m     
+
+9 rows selected.
+
+SQL> insert into  customer values(11,'Karan','8888112235','Jaipur','m');
+
+1 row created.
+
+SQL> insert into  customer values(12,'Karan','8888112235','Jaipur','m');
+
+1 row created.
+
+SQL> insert into  custbu values(12,'Karan','8888112235','Jaipur','m');
+
+1 row created.
+
+SQL> delete * from custbu;
+delete * from custbu
+       *
+ERROR at line 1:
+ORA-00903: invalid table name 
+
+
+SQL> delete from custbu;
+
+1 row deleted.
+
+SQL> insert into  customer values(13,'Karan','8888112235','Jaipur','m');
+
+1 row created.
+
+SQL> insert into  customer values(14,'Karan','8888112235','Jaipur','m');
+
+1 row created.
+
+SQL> delete * from custbu;
+delete * from custbu
+       *
+ERROR at line 1:
+ORA-00903: invalid table name 
+
+
+SQL> select * from custbu;
+
+no rows selected
+
+SQL> rollback;
+
+Rollback complete.
+
+SQL> select * from custbu;
+
+no rows selected
+
+SQL> select * from customer;
+
+       CID CNAME                CPHONE               CCITY                C     
+---------- -------------------- -------------------- -------------------- -     
+         1 AAKASH               9999999999           DELHI                m     
+         2 AMAN                 9785463215           NOIDA                m     
+         3 NEHA                 9999999999           MUMBAI               f     
+         4 MEGHA                9994562399           KOLKATA              f     
+         5 PULKIT               7895999999           LUCKNOW              m     
+         6 VIRAT                9890989065           DELHI                m     
+         7 ROHIT                8888111222           MUMBAI               m     
+         8 Rahul                8888112233           Pune                 m     
+         9 Rajesh               8888112234           Pune                 m     
+
+9 rows selected.
+
+SQL> show user
+USER is "SYSTEM"
+SQL> create user karan identified by admin123 default tablespace users;
+
+User created.
+
+SQL> conn
+Enter user-name: karan
+ERROR:
+ORA-01045: user KARAN lacks CREATE SESSION privilege; logon denied 
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> show user;
+USER is ""
+SQL> conn system/admin
+ERROR:
+ORA-28002: the password will expire within 6 days 
+
+
+Connected.
+SQL> show user
+USER is "SYSTEM"
+SQL> grant CREATE SESSION to karan
+  2  ;
+
+Grant succeeded.
+
+SQL> conn karan/admin123;
+Connected.
+SQL> create table test(
+  2  abc number(4));
+create table test(
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> show user
+USER is "KARAN"
+SQL> conn system/admin123
+ERROR:
+ORA-01017: invalid username/password; logon denied 
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> conn system/admin
+ERROR:
+ORA-28002: the password will expire within 6 days 
+
+
+Connected.
+SQL> show user
+USER is "SYSTEM"
+SQL> grant create table to karan;
+
+Grant succeeded.
+
+SQL> grant dba to karan;
+
+Grant succeeded.
+
+SQL> conn karan/admin123;
+Connected.
+SQL> create user amey identified by admin123 default tablespace users;
+
+User created.
+
+SQL> drop user amey;
+
+User dropped.
+
+SQL> spool off;

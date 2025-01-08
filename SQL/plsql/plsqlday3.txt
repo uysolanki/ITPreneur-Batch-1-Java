@@ -1,0 +1,222 @@
+SQL> create or replace procedure p1
+  2  is
+  3  pcity varchar(10);
+  4  pphone customer.cphone%type;
+  5  begin
+  6  select cphone,ccity into pphone,pcity
+  7  from customer
+  8  where cname like 'AAKASH';
+  9  dbms_output.put_line('Phone num is '||pphone);
+ 10  dbms_output.put_line('City is '||pcity);
+ 11  end;
+ 12  /
+
+Procedure created.
+
+SQL> execute p1;
+Phone num is 9999999999                                                         
+City is DELHI                                                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> create or replace procedure p2(
+  2  pcid in customer.cid%type)
+  3  is
+  4  pcname customer.cname%type;
+  5  pphone customer.cphone%type;
+  6  pcity customer.ccity%type;
+  7  pcgen customer.cgender%type;
+  8  begin
+  9  select cname,cphone,ccity,cgender into pcname,pphone,pcity,pcgen
+ 10  from customer
+ 11  where cid=pcid;
+ 12  dbms_output.put_line('Customer name is '||pcname);
+ 13  dbms_output.put_line('Customer phone is '||phone);
+ 14  dbms_output.put_line('Customer city is '||pcity);
+ 15  dbms_output.put_line('Customer gender is '||pcgen);
+ 16  end;
+ 17  /
+
+Warning: Procedure created with compilation errors.
+
+SQL> show errors;
+Errors for PROCEDURE P2:
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+13/1     PL/SQL: Statement ignored                                              
+13/44    PLS-00201: identifier 'PHONE' must be declared                         
+SQL> create or replace procedure p2(
+  2  pcid in customer.cid%type)
+  3  is
+  4  pcname customer.cname%type;
+  5  pphone customer.cphone%type;
+  6  pcity customer.ccity%type;
+  7  pcgen customer.cgender%type;
+  8  begin
+  9  select cname,cphone,ccity,cgender into pcname,pphone,pcity,pcgen
+ 10  from customer
+ 11  where cid=pcid;
+ 12  dbms_output.put_line('Customer name is '||pcname);
+ 13  dbms_output.put_line('Customer phone is '||pphone);
+ 14  dbms_output.put_line('Customer city is '||pcity);
+ 15  dbms_output.put_line('Customer gender is '||pcgen);
+ 16  end;
+ 17  /
+
+Procedure created.
+
+SQL> execute p2(1);
+Customer name is AAKASH                                                         
+Customer phone is 9999999999                                                    
+Customer city is DELHI                                                          
+Customer gender is m                                                            
+
+PL/SQL procedure successfully completed.
+
+SQL> execute p2(2);
+Customer name is AMAN                                                           
+Customer phone is 9785463215                                                    
+Customer city is NOIDA                                                          
+Customer gender is m                                                            
+
+PL/SQL procedure successfully completed.
+
+SQL> execute p2(3);
+Customer name is NEHA                                                           
+Customer phone is 9999999999                                                    
+Customer city is MUMBAI                                                         
+Customer gender is f                                                            
+
+PL/SQL procedure successfully completed.
+
+SQL> create or replace procedure p3(
+  2  pcid in customer.cid%type)
+  3  is
+  4  pcust customer%rowtype;
+  5  begin
+  6  select * into pcust
+  7  from customer
+  8  where cid=pcid;
+  9  dbms_output.put_line('Customer name is '||pcust.cname);
+ 10  dbms_output.put_line('Customer Phone is '||pcust.cphone);
+ 11  dbms_output.put_line('Customer City is '||pcust.ccity);
+ 12  dbms_output.put_line('Customer Gender is '||pcust.cgender);
+ 13  end;
+ 14  /
+
+Procedure created.
+
+SQL> execute p3(3);
+Customer name is NEHA                                                           
+Customer Phone is 9999999999                                                    
+Customer City is MUMBAI                                                         
+Customer Gender is f                                                            
+
+PL/SQL procedure successfully completed.
+
+SQL> create or replace procedure procInsCust(pcid in customer.cid%type,
+  2  pcname in customer.cname%type,
+  3  pphone in customer.cphone%type,
+  4  pcity in customer.ccity%type,
+  5  pgen in customer.cgender%type)
+  6  is
+  7  begin
+  8  insert into customer values(pcid,pcname,pphone,pcity,pgen);
+  9  end;
+ 10  /
+
+Procedure created.
+
+SQL> select * from customer;
+
+       CID CNAME                CPHONE               CCITY                C     
+---------- -------------------- -------------------- -------------------- -     
+         1 AAKASH               9999999999           DELHI                m     
+         2 AMAN                 9785463215           NOIDA                m     
+         3 NEHA                 9999999999           MUMBAI               f     
+         4 MEGHA                9994562399           KOLKATA              f     
+         5 PULKIT               7895999999           LUCKNOW              m     
+         6 VIRAT                9890989065           DELHI                m     
+         7 ROHIT                8888111222           MUMBAI               m     
+         8 Rahul                8888112233           Pune                 m     
+         9 Rajesh               8888112234           Pune                 m     
+
+9 rows selected.
+
+SQL> execute procInsCust(10,'Shubman','8888111444','SATARA','m');
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from customer;
+
+       CID CNAME                CPHONE               CCITY                C     
+---------- -------------------- -------------------- -------------------- -     
+         1 AAKASH               9999999999           DELHI                m     
+         2 AMAN                 9785463215           NOIDA                m     
+         3 NEHA                 9999999999           MUMBAI               f     
+         4 MEGHA                9994562399           KOLKATA              f     
+         5 PULKIT               7895999999           LUCKNOW              m     
+         6 VIRAT                9890989065           DELHI                m     
+         7 ROHIT                8888111222           MUMBAI               m     
+         8 Rahul                8888112233           Pune                 m     
+         9 Rajesh               8888112234           Pune                 m     
+        10 Shubman              8888111444           SATARA               m     
+
+10 rows selected.
+
+SQL> create or replace procedure procInsCust1(pcid in customer.cid%type,
+  2  pcname in customer.cname%type,
+  3  pphone in customer.cphone%type,
+  4  pcity in customer.ccity%type,
+  5  pgen in customer.cgender%type,
+  6  result out number)
+  7  is
+  8  begin
+  9  insert into customer values(pcid,pcname,pphone,pcity,pgen);
+ 10  result=1;
+ 11  exception
+ 12  when others then
+ 13  result=0;
+ 14  end;
+ 15  /
+
+Warning: Procedure created with compilation errors.
+
+SQL> create or replace procedure procInsCust1(pcid in customer.cid%type,
+  2  pcname in customer.cname%type,
+  3  pphone in customer.cphone%type,
+  4  pcity in customer.ccity%type,
+  5  pgen in customer.cgender%type,
+  6  result out number)
+  7  is
+  8  begin
+  9  insert into customer values(pcid,pcname,pphone,pcity,pgen);
+ 10  result:=1;
+ 11  exception
+ 12  when others then
+ 13  result:=0;
+ 14  end;
+ 15  /
+
+Procedure created.
+
+SQL> select * from customer;
+
+       CID CNAME                CPHONE               CCITY                C     
+---------- -------------------- -------------------- -------------------- -     
+         1 AAKASH               9999999999           DELHI                m     
+         2 AMAN                 9785463215           NOIDA                m     
+         3 NEHA                 9999999999           MUMBAI               f     
+         4 MEGHA                9994562399           KOLKATA              f     
+         5 PULKIT               7895999999           LUCKNOW              m     
+         6 VIRAT                9890989065           DELHI                m     
+         7 ROHIT                8888111222           MUMBAI               m     
+         8 Rahul                8888112233           Pune                 m     
+         9 Rajesh               8888112234           Pune                 m     
+        10 Shubman              8888111444           SATARA               m     
+        11 Hardik               8989898989           Surat                m     
+
+11 rows selected.
+
+SQL> spool off
