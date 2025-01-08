@@ -51,6 +51,7 @@ public class CallableStatementDemo2 {
 	}
 }
 /*
+  C:\oraclexe\app\oracle\product\11.2.0\server\jdbc
 create or replace procedure procInsCust1(pcid in customer.cid%type,
    pcname in customer.cname%type,
     pphone in customer.cphone%type,
