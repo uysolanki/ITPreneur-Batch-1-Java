@@ -56,16 +56,16 @@ create or replace procedure procInsCust1(pcid in customer.cid%type,
    pcname in customer.cname%type,
     pphone in customer.cphone%type,
     pcity in customer.ccity%type,
-   pgen in customer.cgender%type,
-   result out number)
-    is
+  pgen in customer.cgender%type,
+  result out number)
+  is
   begin
-   insert into customer values(pcid,pcname,pphone,pcity,pgen);
+  insert into customer values(pcid,pcname,pphone,pcity,pgen);
   result:=1;
   exception
   when others then
   result:=0;
-   end;
+  end;
   /
 */
 
