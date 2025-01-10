@@ -1,0 +1,294 @@
+SQL> --accept a dno and bonus amount and increment sal of all emps of the particular dept by that amount
+SQL> create or replace procedure pincrement(pdno in dept.dno%type,
+  2  pamt in emp.sal%type)
+  3  as
+  4  cursor c1
+  5  is
+  6  select *
+  7  from emp
+  8  ;
+  9  is
+ 10  begin
+ 11  for x in c1 loop
+ 12  if x.dno=pdno then
+ 13  update emp set sal=sal+pamt;
+ 14  end if;
+ 15  end loop;
+ 16  end;
+ 17  /
+
+Warning: Procedure created with compilation errors.
+
+SQL> show errors;
+Errors for PROCEDURE PINCREMENT:
+
+LINE/COL ERROR                                                                                      
+-------- -----------------------------------------------------------------                          
+9/1      PLS-00103: Encountered the symbol "IS" when expecting one of the                           
+         following:                                                                                 
+         begin function pragma procedure subtype type <an identifier>                               
+         <a double-quoted delimited-identifier> current cursor delete                               
+         exists prior                                                                               
+                                                                                                    
+16/4     PLS-00103: Encountered the symbol "end-of-file" when expecting                             
+         one of the following:                                                                      
+         begin function pragma procedure                                                            
+                                                                                                    
+SQL> create or replace procedure pincrement(pdno in dept.dno%type,
+  2  pamt in emp.sal%type)
+  3  as
+  4  cursor c1
+  5  is
+  6  select *
+  7  from emp;
+  8  begin
+  9  for x in c1 loop
+ 10  if x.dno=pdno then
+ 11  update emp set sal=sal+pamt;
+ 12  end if;
+ 13  end loop;
+ 14  end;
+ 15  /
+
+Procedure created.
+
+SQL> select * from dept;
+
+       DNO DNAME      CITY                                                                          
+---------- ---------- ----------                                                                    
+         1 IT         Pune                                                                          
+         2 SALES      Pune                                                                          
+         3 MARK       Delhi                                                                         
+         4 HR         Jaipur                                                                        
+
+SQL> select * from emp;
+
+       ENO ENAME             SAL        DNO                                                         
+---------- ---------- ---------- ----------                                                         
+         1 Alice             800          1                                                         
+         2 Ben               900          1                                                         
+         3 Chris             700          2                                                         
+         4 Tom              1000          2                                                         
+         5 David             600          3                                                         
+
+SQL> execute pincrement(1,1000);
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from emp;
+
+       ENO ENAME             SAL        DNO                                                         
+---------- ---------- ---------- ----------                                                         
+         1 Alice            2800          1                                                         
+         2 Ben              2900          1                                                         
+         3 Chris            2700          2                                                         
+         4 Tom              3000          2                                                         
+         5 David            2600          3                                                         
+
+SQL> create or replace procedure pincrement(pdno in dept.dno%type,
+  2  pamt in emp.sal%type)
+  3  as
+  4  cursor c1
+  5  is
+  6  select *
+  7  from emp;
+  8  begin
+  9  for x in c1 loop
+ 10  if x.dno=pdno then
+ 11  update emp set sal=sal+pamt where dno=pdno;
+ 12  end if;
+ 13  end loop;
+ 14  end;
+ 15  /
+
+Procedure created.
+
+SQL> execute pincrement(1,1000);
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from emp;
+
+       ENO ENAME             SAL        DNO                                                         
+---------- ---------- ---------- ----------                                                         
+         1 Alice            4800          1                                                         
+         2 Ben              4900          1                                                         
+         3 Chris            2700          2                                                         
+         4 Tom              3000          2                                                         
+         5 David            2600          3                                                         
+
+SQL> create or replace procedure pincrement(pdno in dept.dno%type,
+  2  pamt in emp.sal%type)
+  3  as
+  4  cursor c1
+  5  is
+  6  select *
+  7  from emp;
+  8  begin
+  9  for x in c1 loop
+ 10  if x.dno=pdno then
+ 11  update emp set sal=sal+pamt where eno=x.eno;
+ 12  end if;
+ 13  end loop;
+ 14  end;
+ 15  /
+
+Procedure created.
+
+SQL> execute pincrement(1,1);
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from emp;
+
+       ENO ENAME             SAL        DNO                                                         
+---------- ---------- ---------- ----------                                                         
+         1 Alice            4801          1                                                         
+         2 Ben              4901          1                                                         
+         3 Chris            2700          2                                                         
+         4 Tom              3000          2                                                         
+         5 David            2600          3                                                         
+
+SQL> create or replace trigger t1
+  2  before
+  3  insert or update
+  4  on emp
+  5  for each row
+  6  begin
+  7  if :new.sal<=0 then
+  8  raise_application_error('-20111','Salary cannot be zero or negative');
+  9  end if;
+ 10  end;
+ 11  /
+
+Trigger created.
+
+SQL> insert into emp values(6,'Frank',1000,3);
+
+1 row created.
+
+SQL> insert into emp values(7,'George',-1000,3);
+insert into emp values(7,'George',-1000,3)
+            *
+ERROR at line 1:
+ORA-20111: Salary cannot be zero or negative 
+ORA-06512: at "SYSTEM.T1", line 3 
+ORA-04088: error during execution of trigger 'SYSTEM.T1' 
+
+
+SQL> select * from emp;
+
+       ENO ENAME             SAL        DNO                                                         
+---------- ---------- ---------- ----------                                                         
+         1 Alice            4801          1                                                         
+         2 Ben              4901          1                                                         
+         3 Chris            2700          2                                                         
+         4 Tom              3000          2                                                         
+         5 David            2600          3                                                         
+         6 Frank            1000          3                                                         
+
+6 rows selected.
+
+SQL> update emp
+  2  set sal=-1000
+  3  where ename like 'David';
+update emp
+       *
+ERROR at line 1:
+ORA-20111: Salary cannot be zero or negative 
+ORA-06512: at "SYSTEM.T1", line 3 
+ORA-04088: error during execution of trigger 'SYSTEM.T1' 
+
+
+SQL> update emp
+  2  set sal=1000
+  3  where ename like 'David';
+
+1 row updated.
+
+SQL> select * from emp;
+
+       ENO ENAME             SAL        DNO                                                         
+---------- ---------- ---------- ----------                                                         
+         1 Alice            4801          1                                                         
+         2 Ben              4901          1                                                         
+         3 Chris            2700          2                                                         
+         4 Tom              3000          2                                                         
+         5 David            1000          3                                                         
+         6 Frank            1000          3                                                         
+
+6 rows selected.
+
+SQL> create table empbu(
+  2  eno number(5),
+  3  hikedate date,
+  4  oldsal number(5));
+
+Table created.
+
+SQL> create or replace trigger t2
+  2  after
+  3  update
+  4  on emp
+  5  for each row
+  6  begin
+  7  insert into empbu values(:old.eno,sysdate,:old.sal);
+  8  end;
+  9  /
+
+Trigger created.
+
+SQL> select * from empbu;
+
+no rows selected
+
+SQL> update
+  2  emp set sal=1200 where ename like 'David';
+
+1 row updated.
+
+SQL> select * from emp;
+
+       ENO ENAME             SAL        DNO                                                         
+---------- ---------- ---------- ----------                                                         
+         1 Alice            4801          1                                                         
+         2 Ben              4901          1                                                         
+         3 Chris            2700          2                                                         
+         4 Tom              3000          2                                                         
+         5 David            1200          3                                                         
+         6 Frank            1000          3                                                         
+
+6 rows selected.
+
+SQL> select * from empbu;
+
+       ENO HIKEDATE      OLDSAL                                                                     
+---------- --------- ----------                                                                     
+         5 10-JAN-25       1000                                                                     
+
+SQL> update
+  2  emp set sal=1800 where ename like 'David';
+
+1 row updated.
+
+SQL> select * from emp;
+
+       ENO ENAME             SAL        DNO                                                         
+---------- ---------- ---------- ----------                                                         
+         1 Alice            4801          1                                                         
+         2 Ben              4901          1                                                         
+         3 Chris            2700          2                                                         
+         4 Tom              3000          2                                                         
+         5 David            1800          3                                                         
+         6 Frank            1000          3                                                         
+
+6 rows selected.
+
+SQL> select * from empbu;
+
+       ENO HIKEDATE      OLDSAL                                                                     
+---------- --------- ----------                                                                     
+         5 10-JAN-25       1000                                                                     
+         5 10-JAN-25       1200                                                                     
+
+SQL> spool off
